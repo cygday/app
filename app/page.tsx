@@ -4,71 +4,69 @@ import { User } from '@supabase/supabase-js';
 import { supabase } from './lib/supabase';
 import { QRCodeCanvas } from 'qrcode.react';
 
-const USDT_ADDRESS = "DLtut1ryErBD2Tw4a2G3nJs1FCrHo69cYrCC6DzYk5Uf";   // ← Change this
-const BTC_ADDRESS = "bc1qlxvxk0nrzghhzawl3fhuxtrnqrgerza8czmatm";           // ← Change this
+const USDT_ADDRESS = "DLtut1ryErBD2Tw4a2G3nJs1FCrHo69cYrCC6DzYk5Uf";
+const BTC_ADDRESS = "bc1qlxvxk0nrzghhzawl3fhuxtrnqrgerza8czmatm";
+
+type FreeVideo = {
+  id: number;
+  title: string;
+  thumb: string;
+  duration: string;
+  videoUrl: string;
+};
+
+type PremiumVideo = {
+  id: number;
+  title: string;
+  thumb: string;
+  duration: string;
+  videoUrl: string;
+};
 
 export default function Home() {
   const [is18, setIs18] = useState(false);
   const [user, setUser] = useState<User | null>(null);
   const [showModal, setShowModal] = useState(false);
- 
-  type FreeVideo = {
-  id: number; title: string; thumb: string;
-  duration: string; videoUrl: string;
-};
-type PremiumVideo = {
-  id: number; title: string; thumb: string; duration: string; videoUrl: string;
-};
+  const [selectedPremiumVideo, setSelectedPremiumVideo] = useState<PremiumVideo | null>(null);
+  const [playingVideo, setPlayingVideo] = useState<FreeVideo | null>(null);
+  const [playingPremiumVideo, setPlayingPremiumVideo] = useState<PremiumVideo | null>(null);
 
-
-const [selectedPremiumVideo, setSelectedPremiumVideo] =
-  useState<PremiumVideo | null>(null);
-const [playingPremiumVideo, setPlayingPremiumVideo] =
-  useState<PremiumVideo | null>(null);
-
-  /*const [selectedPremiumVideo, setSelectedPremiumVideo] = useState<any>(null);
-  const [playingVideo, setPlayingVideo] = useState<any>(null);*/
-
-  // Free Videos (Anyone can watch)
-  const freeVideos = [
-    { 
-      id: 1, 
-      title: "Free Sample 1 - Teaser", 
-      thumb: "https://picsum.photos/id/1015/300/200", 
+  const freeVideos: FreeVideo[] = [
+    {
+      id: 1,
+      title: "Free Sample 1 - Teaser",
+      thumb: "https://picsum.photos/id/1015/300/200",
       duration: "02:30",
-      videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" 
+      videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
     },
-    { 
-      id: 2, 
-      title: "Free Sample 2 - Short Clip", 
-      thumb: "https://picsum.photos/id/133/300/200", 
+    {
+      id: 2,
+      title: "Free Sample 2 - Short Clip",
+      thumb: "https://picsum.photos/id/133/300/200",
       duration: "01:45",
-      videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4" 
+      videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4"
     },
-        { 
-      id: 3, 
-      title: "Free Sample 2 - Short Clip", 
-      thumb: "https://picsum.photos/id/133/300/200", 
+    {
+      id: 3,
+      title: "Free Sample 3 - Short Clip",
+      thumb: "https://picsum.photos/id/145/300/200",
       duration: "01:45",
-      videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4" 
+      videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4"
     },
-        { 
-      id: 4, 
-      title: "Free Sample 2 - Short Clip", 
-      thumb: "https://picsum.photos/id/133/300/200", 
+    {
+      id: 4,
+      title: "Free Sample 4 - Short Clip",
+      thumb: "https://picsum.photos/id/160/300/200",
       duration: "01:45",
-      videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4" 
+      videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4"
     },
-
-
   ];
 
-  // Premium Videos (Need donation to unlock)
-  const premiumVideos = [
-    { id: 5, title: "Premium - Passionate Night", thumb: "https://picsum.photos/id/201/300/200", duration: "15:20", videoUrl: "/videos/video.mp4" },
-    { id: 6, title: "Premium - Wild Desire", thumb: "https://picsum.photos/id/206/300/200", duration: "12:45", videoUrl: "/videos/vide.mp4" },
-    { id: 7, title: "Premium - Secret Encounter", thumb: "https://picsum.photos/id/180/300/200", duration: "18:10", videoUrl: "/videos/vid.mp4" },
-    { id: 8, title: "Premium - Wild Desire", thumb: "https://picsum.photos/id/206/300/200", duration: "12:45", videoUrl: "/videos/vi.mp4" },
+  const premiumVideos: PremiumVideo[] = [
+    { id: 5, title: "Premium - Passionate Night",  thumb: "https://picsum.photos/id/201/300/200", duration: "15:20", videoUrl: "/videos/video.mp4" },
+    { id: 6, title: "Premium - Wild Desire",       thumb: "https://picsum.photos/id/206/300/200", duration: "12:45", videoUrl: "/videos/vide.mp4" },
+    { id: 7, title: "Premium - Secret Encounter",  thumb: "https://picsum.photos/id/180/300/200", duration: "18:10", videoUrl: "/videos/vid.mp4" },
+    { id: 8, title: "Premium - Wild Desire 2",     thumb: "https://picsum.photos/id/210/300/200", duration: "12:45", videoUrl: "/videos/vi.mp4" },
   ];
 
   useEffect(() => {
@@ -88,10 +86,14 @@ const [playingPremiumVideo, setPlayingPremiumVideo] =
     else alert("✅ Magic link sent! Check your email.");
   };
 
-/*  const openDonationModal = (video: any) => {*/
-const openDonationModal = (video: PremiumVideo) => {
+  const openDonationModal = (video: PremiumVideo) => {
     setSelectedPremiumVideo(video);
     setShowModal(true);
+  };
+
+  const handleUnlock = () => {
+    setPlayingPremiumVideo(selectedPremiumVideo);
+    setShowModal(false);
   };
 
   if (!is18) {
@@ -100,7 +102,7 @@ const openDonationModal = (video: PremiumVideo) => {
         <div className="text-center p-10 max-w-md">
           <h1 className="text-6xl font-bold mb-6 text-red-500">🔞 XXXVault</h1>
           <p className="mb-10 text-xl">You must be 18+ to enter.</p>
-          <button 
+          <button
             onClick={() => setIs18(true)}
             className="bg-red-600 hover:bg-red-700 px-16 py-6 rounded-2xl text-2xl font-bold"
           >
@@ -112,40 +114,49 @@ const openDonationModal = (video: PremiumVideo) => {
   }
 
   return (
-    <div className="min-h-screen bg-zinc-950">
+    <div className="min-h-screen bg-zinc-950 text-white">
+      {/* Header */}
       <header className="border-b border-zinc-800 p-5 flex justify-between items-center sticky top-0 bg-zinc-950 z-50">
         <h1 className="text-3xl font-bold text-red-500">XXXVault</h1>
         {user ? (
           <div className="flex items-center gap-4">
             <span className="text-sm text-gray-400">{user.email}</span>
-            <button onClick={() => supabase.auth.signOut()} className="px-5 py-2 bg-zinc-800 hover:bg-zinc-700 rounded-lg text-sm">Logout</button>
+            <button
+              onClick={() => supabase.auth.signOut()}
+              className="px-5 py-2 bg-zinc-800 hover:bg-zinc-700 rounded-lg text-sm"
+            >
+              Logout
+            </button>
           </div>
         ) : (
-          <button onClick={handleLogin} className="bg-white text-black px-6 py-3 rounded-xl font-medium">Login / Register</button>
+          <button
+            onClick={handleLogin}
+            className="bg-white text-black px-6 py-3 rounded-xl font-medium"
+          >
+            Login / Register
+          </button>
         )}
       </header>
 
       <main className="p-6 max-w-7xl mx-auto">
-        {/* Free Videos Section */}
+        {/* Free Videos */}
         <h2 className="text-3xl font-bold mb-6 text-green-500">✅ Free Videos</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-16">
           {freeVideos.map(video => (
             <div key={video.id} className="bg-zinc-900 rounded-2xl overflow-hidden">
               <div className="relative">
-                <img src={video.thumb} className="w-full aspect-video object-cover" />
                 {playingVideo?.id === video.id ? (
                   <video controls autoPlay className="w-full aspect-video" src={video.videoUrl} />
                 ) : (
-                  <button 
-                    onClick={() => { setPlayingPremiumVideo(selectedPremiumVideo); setShowModal(false); }}
-                    className="mt-8 w-full py-4 bg-green-700 hover:bg-green-600 rounded-2xl text-lg font-bold">
-                    <div className="bg-red-600 rounded-full p-5">
-                      ▶️ I Sent Payment — Watch Now
-                    </div>
-                  </button>
-                  <button onClick={() => setShowModal(false)} className="mt-3 w-full py-3 bg-zinc-800 hover:bg-zinc-700 rounded-2xl text-sm"
-> Close
-</button>
+                  <>
+                    <img src={video.thumb} alt={video.title} className="w-full aspect-video object-cover" />
+                    <button
+                      onClick={() => setPlayingVideo(video)}
+                      className="absolute inset-0 flex items-center justify-center bg-black/60 hover:bg-black/40 transition"
+                    >
+                      <div className="bg-red-600 rounded-full p-5 text-2xl">▶️</div>
+                    </button>
+                  </>
                 )}
               </div>
               <div className="p-4">
@@ -156,36 +167,36 @@ const openDonationModal = (video: PremiumVideo) => {
           ))}
         </div>
 
-        {/* Premium Videos Section */}
+        {/* Premium Videos */}
         <h2 className="text-3xl font-bold mb-6 text-yellow-500">🔒 Premium Videos</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
           {premiumVideos.map(video => (
-             <div key={video.id} className="bg-zinc-900 rounded-2xl overflow-hidden group">
-    <div className="relative">
-      {playingPremiumVideo?.id === video.id ? (
-        <video controls autoPlay className="w-full aspect-video" src={video.videoUrl} />
-      ) : (
-        <>
-          <img src={video.thumb} alt={video.title} className="w-full aspect-video object-cover" />
-          <div className="absolute bottom-3 right-3 bg-black/80 px-3 py-1 text-xs rounded">{video.duration}</div>
-        </>
-      )}
-    </div>
-    <div className="p-5">
-      <h3 className="font-semibold mb-4">{video.title}</h3>
-      {playingPremiumVideo?.id === video.id ? (
-        <p className="text-center text-green-400 text-sm">🔓 Unlocked</p>
-      ) : (
-        <button 
-          onClick={() => openDonationModal(video)}
-          className="w-full bg-gradient-to-r from-purple-600 to-red-600 py-4 rounded-xl font-bold hover:brightness-110"
-        >
-          💰 Unlock Full Video
-        </button>
-      )}
-    </div>
-  </div>
-))}
+            <div key={video.id} className="bg-zinc-900 rounded-2xl overflow-hidden">
+              <div className="relative">
+                {playingPremiumVideo?.id === video.id ? (
+                  <video controls autoPlay className="w-full aspect-video" src={video.videoUrl} />
+                ) : (
+                  <>
+                    <img src={video.thumb} alt={video.title} className="w-full aspect-video object-cover" />
+                    <div className="absolute bottom-3 right-3 bg-black/80 px-3 py-1 text-xs rounded">{video.duration}</div>
+                  </>
+                )}
+              </div>
+              <div className="p-5">
+                <h3 className="font-semibold mb-4">{video.title}</h3>
+                {playingPremiumVideo?.id === video.id ? (
+                  <p className="text-center text-green-400 text-sm font-medium">🔓 Unlocked</p>
+                ) : (
+                  <button
+                    onClick={() => openDonationModal(video)}
+                    className="w-full bg-gradient-to-r from-purple-600 to-red-600 py-4 rounded-xl font-bold hover:brightness-110"
+                  >
+                    💰 Unlock Full Video
+                  </button>
+                )}
+              </div>
+            </div>
+          ))}
         </div>
       </main>
 
@@ -216,9 +227,15 @@ const openDonationModal = (video: PremiumVideo) => {
               </div>
             </div>
 
-            <button 
+            <button
+              onClick={handleUnlock}
+              className="mt-6 w-full py-4 bg-green-700 hover:bg-green-600 rounded-2xl text-lg font-bold"
+            >
+              ✅ I Sent Payment — Watch Now
+            </button>
+            <button
               onClick={() => setShowModal(false)}
-              className="mt-8 w-full py-4 bg-zinc-800 hover:bg-zinc-700 rounded-2xl text-lg"
+              className="mt-3 w-full py-3 bg-zinc-800 hover:bg-zinc-700 rounded-2xl text-sm"
             >
               Close
             </button>
