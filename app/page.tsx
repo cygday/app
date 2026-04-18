@@ -11,8 +11,23 @@ export default function Home() {
   const [is18, setIs18] = useState(false);
   const [user, setUser] = useState<User | null>(null);
   const [showModal, setShowModal] = useState(false);
-  const [selectedPremiumVideo, setSelectedPremiumVideo] = useState<any>(null);
-  const [playingVideo, setPlayingVideo] = useState<any>(null);
+ 
+  type FreeVideo = {
+  id: number; title: string; thumb: string;
+  duration: string; videoUrl: string;
+};
+type PremiumVideo = {
+  id: number; title: string; thumb: string; duration: string; videoUrl: string;
+};
+
+
+const [selectedPremiumVideo, setSelectedPremiumVideo] =
+  useState<PremiumVideo | null>(null);
+const [playingPremiumVideo, setPlayingPremiumVideo] =
+  useState<PremiumVideo | null>(null);
+
+  /*const [selectedPremiumVideo, setSelectedPremiumVideo] = useState<any>(null);
+  const [playingVideo, setPlayingVideo] = useState<any>(null);*/
 
   // Free Videos (Anyone can watch)
   const freeVideos = [
@@ -50,11 +65,10 @@ export default function Home() {
 
   // Premium Videos (Need donation to unlock)
   const premiumVideos = [
-    { id: 5, title: "Premium - Passionate Night", thumb: "https://picsum.photos/id/201/300/200", duration: "15:20" },
-    { id: 6, title: "Premium - Wild Desire", thumb: "https://picsum.photos/id/206/300/200", duration: "12:45" },
-    { id: 7, title: "Premium - Secret Encounter", thumb: "https://picsum.photos/id/180/300/200", duration: "18:10" },
-    { id: 8, title: "Premium - Wild Desire", thumb: "https://picsum.photos/id/206/300/200", duration: "12:45" },
-    
+    { id: 5, title: "Premium - Passionate Night", thumb: "https://picsum.photos/id/201/300/200", duration: "15:20", videoUrl: "/videos/video.mp4" },
+    { id: 6, title: "Premium - Wild Desire", thumb: "https://picsum.photos/id/206/300/200", duration: "12:45", videoUrl: "/videos/vide.mp4" },
+    { id: 7, title: "Premium - Secret Encounter", thumb: "https://picsum.photos/id/180/300/200", duration: "18:10", videoUrl: "/videos/vid.mp4" },
+    { id: 8, title: "Premium - Wild Desire", thumb: "https://picsum.photos/id/206/300/200", duration: "12:45", videoUrl: "/videos/vi.mp4" },
   ];
 
   useEffect(() => {
@@ -74,7 +88,8 @@ export default function Home() {
     else alert("✅ Magic link sent! Check your email.");
   };
 
-  const openDonationModal = (video: any) => {
+/*  const openDonationModal = (video: any) => {*/
+const openDonationModal = (video: PremiumVideo) => {
     setSelectedPremiumVideo(video);
     setShowModal(true);
   };
@@ -122,13 +137,15 @@ export default function Home() {
                   <video controls autoPlay className="w-full aspect-video" src={video.videoUrl} />
                 ) : (
                   <button 
-                    onClick={() => setPlayingVideo(video)}
-                    className="absolute inset-0 flex items-center justify-center bg-black/60 hover:bg-black/40 transition"
-                  >
+                    onClick={() => { setPlayingPremiumVideo(selectedPremiumVideo); setShowModal(false); }}
+                    className="mt-8 w-full py-4 bg-green-700 hover:bg-green-600 rounded-2xl text-lg font-bold">
                     <div className="bg-red-600 rounded-full p-5">
-                      ▶️
+                      ▶️ I Sent Payment — Watch Now
                     </div>
                   </button>
+                  <button onClick={() => setShowModal(false)} className="mt-3 w-full py-3 bg-zinc-800 hover:bg-zinc-700 rounded-2xl text-sm"
+> Close
+</button>
                 )}
               </div>
               <div className="p-4">
@@ -143,22 +160,32 @@ export default function Home() {
         <h2 className="text-3xl font-bold mb-6 text-yellow-500">🔒 Premium Videos</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
           {premiumVideos.map(video => (
-            <div key={video.id} className="bg-zinc-900 rounded-2xl overflow-hidden group">
-              <div className="relative">
-                <img src={video.thumb} alt={video.title} className="w-full aspect-video object-cover" />
-                <div className="absolute bottom-3 right-3 bg-black/80 px-3 py-1 text-xs rounded">{video.duration}</div>
-              </div>
-              <div className="p-5">
-                <h3 className="font-semibold mb-4">{video.title}</h3>
-                <button 
-                  onClick={() => openDonationModal(video)}
-                  className="w-full bg-gradient-to-r from-purple-600 to-red-600 py-4 rounded-xl font-bold hover:brightness-110"
-                >
-                  💰 Unlock Full Video
-                </button>
-              </div>
-            </div>
-          ))}
+             <div key={video.id} className="bg-zinc-900 rounded-2xl overflow-hidden group">
+    <div className="relative">
+      {playingPremiumVideo?.id === video.id ? (
+        <video controls autoPlay className="w-full aspect-video" src={video.videoUrl} />
+      ) : (
+        <>
+          <img src={video.thumb} alt={video.title} className="w-full aspect-video object-cover" />
+          <div className="absolute bottom-3 right-3 bg-black/80 px-3 py-1 text-xs rounded">{video.duration}</div>
+        </>
+      )}
+    </div>
+    <div className="p-5">
+      <h3 className="font-semibold mb-4">{video.title}</h3>
+      {playingPremiumVideo?.id === video.id ? (
+        <p className="text-center text-green-400 text-sm">🔓 Unlocked</p>
+      ) : (
+        <button 
+          onClick={() => openDonationModal(video)}
+          className="w-full bg-gradient-to-r from-purple-600 to-red-600 py-4 rounded-xl font-bold hover:brightness-110"
+        >
+          💰 Unlock Full Video
+        </button>
+      )}
+    </div>
+  </div>
+))}
         </div>
       </main>
 
