@@ -27,6 +27,13 @@ export default function Home() {
       duration: "01:45",
       videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4" 
     },
+    {
+      id: 3,
+      title: "Free Sample 1 - Teaser",
+      thumb: "https://picsum.photos/id/1015/300/200",
+      duration: "02:30",
+      videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+    },
   ];
 
   // Premium Videos
@@ -105,7 +112,7 @@ export default function Home() {
                   onClick={() => openDonationModal(video)}
                   className="w-full bg-gradient-to-r from-purple-600 to-red-600 py-4 rounded-xl font-bold text-lg hover:brightness-110"
                 >
-                  💰 Donate to Unlock
+                  💰  Unlock
                 </button>
               </div>
             </div>
