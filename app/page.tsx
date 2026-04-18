@@ -34,13 +34,22 @@ export default function Home() {
       duration: "02:30",
       videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
     },
+    {
+      id: 4,
+      title: "Free Sample 2 - Short Clip",
+      thumb: "https://picsum.photos/id/133/300/200",
+      duration: "01:45",
+      videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4"
+    },
+
   ];
 
   // Premium Videos
   const premiumVideos = [
-    { id: 3, title: "Premium - Passionate Night", thumb: "https://picsum.photos/id/201/300/200", duration: "15:20" },
-    { id: 4, title: "Premium - Wild Desire", thumb: "https://picsum.photos/id/206/300/200", duration: "12:45" },
-    { id: 5, title: "Premium - Secret Encounter", thumb: "https://picsum.photos/id/180/300/200", duration: "18:10" },
+    { id: 5, title: "Premium - Passionate Night", thumb: "https://picsum.photos/id/201/300/200", duration: "15:20" },
+    { id: 6, title: "Premium - Wild Desire", thumb: "https://picsum.photos/id/206/300/200", duration: "12:45" },
+    { id: 7, title: "Premium - Secret Encounter", thumb: "https://picsum.photos/id/180/300/200", duration: "18:10" },
+    { id: 8, title: "premium - wild desire", thumb: "https://picsum.photos/id/206/300/200", duration: "12:45" },
   ];
 
   const openDonationModal = (video: any) => {
