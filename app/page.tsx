@@ -37,28 +37,28 @@ export default function Home() {
       title: "Free Sample 1 - Teaser",
       thumb: "https://picsum.photos/id/1015/300/200",
       duration: "02:30",
-      videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+      videoUrl: "/videos/movie.mp4"
     },
     {
       id: 2,
       title: "Free Sample 2 - Short Clip",
       thumb: "https://picsum.photos/id/133/300/200",
       duration: "01:45",
-      videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4"
+      videoUrl: "/videos/movi.mp4"
     },
     {
       id: 3,
       title: "Free Sample 3 - Short Clip",
       thumb: "https://picsum.photos/id/145/300/200",
       duration: "01:45",
-      videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4"
+      videoUrl: "/videos/mov.mp4"
     },
     {
       id: 4,
       title: "Free Sample 4 - Short Clip",
       thumb: "https://picsum.photos/id/160/300/200",
       duration: "01:45",
-      videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4"
+      videoUrl: "/videos/mo.mp4"
     },
   ];
 
