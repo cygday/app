@@ -30,7 +30,8 @@ export default function Home() {
   const [selectedPremiumVideo, setSelectedPremiumVideo] = useState<PremiumVideo | null>(null);
   const [playingVideo, setPlayingVideo] = useState<FreeVideo | null>(null);
   const [playingPremiumVideo, setPlayingPremiumVideo] = useState<PremiumVideo | null>(null);
-
+  const [showQR, setShowQR] = useState(false);
+  
   const freeVideos: FreeVideo[] = [
     {
       id: 1,
