@@ -35,38 +35,38 @@ export default function Home() {
     {
       id: 1,
       title: "Free Sample 1 - Teaser",
-      thumb: "https://picsum.photos/id/1015/300/200",
+      thumb: "",
       duration: "02:30",
       videoUrl: "/videos/movie.mp4"
     },
     {
       id: 2,
       title: "Free Sample 2 - Short Clip",
-      thumb: "https://picsum.photos/id/133/300/200",
+      thumb: "",
       duration: "01:45",
       videoUrl: "/videos/movi.mp4"
     },
     {
       id: 3,
       title: "Free Sample 3 - Short Clip",
-      thumb: "https://picsum.photos/id/145/300/200",
+      thumb: "",
       duration: "01:45",
       videoUrl: "/videos/mov.mp4"
     },
     {
       id: 4,
       title: "Free Sample 4 - Short Clip",
-      thumb: "https://picsum.photos/id/160/300/200",
+      thumb: "",
       duration: "01:45",
       videoUrl: "/videos/mo.mp4"
     },
   ];
 
   const premiumVideos: PremiumVideo[] = [
-    { id: 5, title: "Premium - Passionate Night",  thumb: "https://picsum.photos/id/201/300/200", duration: "15:20", videoUrl: "/videos/video.mp4" },
-    { id: 6, title: "Premium - Wild Desire",       thumb: "https://picsum.photos/id/206/300/200", duration: "12:45", videoUrl: "/videos/vide.mp4" },
-    { id: 7, title: "Premium - Secret Encounter",  thumb: "https://picsum.photos/id/180/300/200", duration: "18:10", videoUrl: "/videos/vid.mp4" },
-    { id: 8, title: "Premium - Wild Desire 2",     thumb: "https://picsum.photos/id/210/300/200", duration: "12:45", videoUrl: "/videos/vi.mp4" },
+    { id: 5, title: "Premium - Passionate Night",  thumb: "", duration: "15:20", videoUrl: "/videos/video.mp4" },
+    { id: 6, title: "Premium - Wild Desire",       thumb: "", duration: "12:45", videoUrl: "/videos/vide.mp4" },
+    { id: 7, title: "Premium - Secret Encounter",  thumb: "", duration: "18:10", videoUrl: "/videos/vid.mp4" },
+    { id: 8, title: "Premium - Wild Desire 2",     thumb: "", duration: "12:45", videoUrl: "/videos/vi.mp4" },
   ];
 
   useEffect(() => {
@@ -100,7 +100,7 @@ export default function Home() {
     return (
       <div className="min-h-screen flex items-center justify-center bg-black text-white">
         <div className="text-center p-10 max-w-md">
-          <h1 className="text-6xl font-bold mb-6 text-red-500">🔞 XXXVault</h1>
+          <h1 className="text-6xl font-bold mb-6 text-red-500">🔞 XXXPORN</h1>
           <p className="mb-10 text-xl">You must be 18+ to enter.</p>
           <button
             onClick={() => setIs18(true)}
@@ -117,7 +117,7 @@ export default function Home() {
     <div className="min-h-screen bg-zinc-950 text-white">
       {/* Header */}
       <header className="border-b border-zinc-800 p-5 flex justify-between items-center sticky top-0 bg-zinc-950 z-50">
-        <h1 className="text-3xl font-bold text-red-500">XXXVault</h1>
+        <h1 className="text-3xl font-bold text-red-500">XXXPORN</h1>
         {user ? (
           <div className="flex items-center gap-4">
             <span className="text-sm text-gray-400">{user.email}</span>
@@ -201,47 +201,69 @@ export default function Home() {
       </main>
 
       {/* Donation Modal */}
-      {showModal && selectedPremiumVideo && (
-        <div className="fixed inset-0 bg-black/95 flex items-center justify-center z-[100] p-4">
-          <div className="bg-zinc-900 rounded-3xl max-w-md w-full p-8">
-            <h3 className="text-2xl font-bold mb-1">Unlock Premium Video</h3>
-            <p className="text-red-400 mb-8">{selectedPremiumVideo.title}</p>
+{showModal && selectedPremiumVideo && (
+  <div className="fixed inset-0 bg-black/95 flex items-center justify-center z-[100] p-4 overflow-y-auto">
+    <div className="bg-zinc-900 rounded-3xl max-w-md w-full p-8 my-4">
+      <h3 className="text-2xl font-bold mb-1">Unlock Premium Video</h3>
+      <p className="text-red-400 mb-8">{selectedPremiumVideo.title}</p>
 
-            <p className="text-gray-400 mb-6 text-center">Send any amount you want</p>
+      {!showQR ? (
+        // Step 1 — just show the pay button
+        <div className="text-center">
+          <p className="text-gray-400 mb-8">Complete payment to watch this video</p>
+          <button
+            onClick={() => setShowQR(true)}
+            className="w-full bg-gradient-to-r from-purple-600 to-red-600 py-5 rounded-xl font-bold text-xl hover:brightness-110"
+          >
+            💰 Pay to Unlock
+          </button>
+          <button
+            onClick={() => setShowModal(false)}
+            className="mt-3 w-full py-3 bg-zinc-800 hover:bg-zinc-700 rounded-2xl text-sm"
+          >
+            Cancel
+          </button>
+        </div>
+      ) : (
+        // Step 2 — show QR codes after clicking Pay
+        <>
+          <p className="text-gray-400 mb-6 text-center">Send any amount you want</p>
 
-            <div className="space-y-10">
-              <div className="text-center">
-                <p className="text-green-400 font-medium mb-3">USDT (TRC20) — Recommended</p>
-                <div className="bg-black p-4 rounded-xl text-xs break-all mb-4 font-mono select-all">{USDT_ADDRESS}</div>
-                <div className="bg-white p-4 rounded-2xl inline-block">
-                  <QRCodeCanvas value={USDT_ADDRESS} size={200} />
-                </div>
-              </div>
-
-              <div className="text-center">
-                <p className="text-orange-400 font-medium mb-3">Bitcoin (BTC)</p>
-                <div className="bg-black p-4 rounded-xl text-xs break-all mb-4 font-mono select-all">{BTC_ADDRESS}</div>
-                <div className="bg-white p-4 rounded-2xl inline-block">
-                  <QRCodeCanvas value={BTC_ADDRESS} size={200} />
-                </div>
+          <div className="space-y-10">
+            <div className="text-center">
+              <p className="text-green-400 font-medium mb-3">USDT (TRC20) — Recommended</p>
+              <div className="bg-black p-4 rounded-xl text-xs break-all mb-4 font-mono select-all">{USDT_ADDRESS}</div>
+              <div className="bg-white p-4 rounded-2xl inline-block">
+                <QRCodeCanvas value={USDT_ADDRESS} size={200} />
               </div>
             </div>
 
-            <button
-              onClick={handleUnlock}
-              className="mt-6 w-full py-4 bg-green-700 hover:bg-green-600 rounded-2xl text-lg font-bold"
-            >
-              ✅ I Sent Payment — Watch Now
-            </button>
-            <button
-              onClick={() => setShowModal(false)}
-              className="mt-3 w-full py-3 bg-zinc-800 hover:bg-zinc-700 rounded-2xl text-sm"
-            >
-              Close
-            </button>
+            <div className="text-center">
+              <p className="text-orange-400 font-medium mb-3">Bitcoin (BTC)</p>
+              <div className="bg-black p-4 rounded-xl text-xs break-all mb-4 font-mono select-all">{BTC_ADDRESS}</div>
+              <div className="bg-white p-4 rounded-2xl inline-block">
+                <QRCodeCanvas value={BTC_ADDRESS} size={200} />
+              </div>
+            </div>
           </div>
-        </div>
+
+          <button
+            onClick={handleUnlock}
+            className="mt-6 w-full py-4 bg-green-700 hover:bg-green-600 rounded-2xl text-lg font-bold"
+          >
+            ✅ I Sent Payment — Watch Now
+          </button>
+          <button
+            onClick={() => { setShowModal(false); setShowQR(false); }}
+            className="mt-3 w-full py-3 bg-zinc-800 hover:bg-zinc-700 rounded-2xl text-sm"
+          >
+            Close
+          </button>
+        </>
       )}
+    </div>
+  </div>
+)}
     </div>
   );
 }
